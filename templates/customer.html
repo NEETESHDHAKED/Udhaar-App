@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head><title>Khata</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Arial;background:#111;color:white;padding:15px}
+.card{background:#222;border:1px solid #333;padding:15px;border-radius:20px;margin:10px 0}
+input{width:100%;padding:12px;margin:5px 0;border-radius:12px;border:none;background:#333;color:white}
+button{padding:13px;width:100%;border:none;border-radius:12px;font-weight:900}
+a{color:#FFD700;text-decoration:none;font-weight:bold}
+.row{display:flex;justify-content:space-between;background:#333;padding:12px;border-radius:12px;margin:6px 0}
+.wa{background:#25D366;color:white;padding:12px;border-radius:12px;text-align:center;display:block;margin:10px 0}
+.print{background:white;color:black;padding:12px;border-radius:12px;text-align:center;display:block}
+@media print{body{background:white;color:black} .no-print{display:none} .card{border:1px solid black}}
+</style>
+</head>
+<body>
+<div class="no-print"><a href="/">⬅ BACK</a></div>
+<h1>👑 {{c.name}}</h1>
+<p>{{c.phone}} - Sharma Kirana</p>
+<div class="card" style="background:linear-gradient(135deg,#FFD700,#FF9800);color:black">
+<h2 style="margin:0">Total Udhaar: ₹{{c.total}}</h2>
+<p>Jamwa Ramgarh - Date: {{c.khata[-1].date if c.khata else "No entry"}}</p>
+</div>
 
+<div class="no-print">
+<a href="{{wa_link}}" target="_blank" class="wa">💬 WHATSAPP PE MANGO - "Bhai Udhaar De De"</a>
+<a href="#" onclick="window.print()" class="print">🖨️ BILL PRINT / PDF BANAO</a>
+
+<div class="card">
+<h3>➕ UDHAAR LIKHO</h3>
+<form action="/udhaar/{{id}}" method="POST">
+<input name="item" placeholder="Kya liya? Chawal 5kg, Tel 1L" required>
+<input name="amount" type="number" placeholder="Kitne ka? ₹" required>
+<button style="background:red;color:white">➕ UDHAAR ADD</button>
+</form>
+</div>
+<div class="card">
+<h3>💰 JAMA KARO</h3>
+<form action="/jama/{{id}}" method="POST">
+<input name="amount" type="number" placeholder="Kitne diye?" required>
+<button style="background:#00ff88">💰 JAMA KARO</button>
+</form>
+</div>
+</div>
+
+<h3>📖 PURA KHATA - BILL</h3>
+{% for k in c.khata|reverse %}
+<div class="row"><span>{{k.date}}<br><b>{{k.item}}</b></span><span style="color:{% if k.type=='UDHAAR' %}red{% else %}green{% endif %};font-weight:bold">{{k.type}} ₹{{k.amount}}</span></div>
+{% else %}<p>Khata khaali hai</p>{% endfor %}
+<p style="text-align:center;color:#888">🙏 Dhanyawad - Sharma Kirana Store - Jamwa Ramgarh</p>
+</body>
+</html>

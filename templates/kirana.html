@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head><title>SHARMA KIRANA PREMIUM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box}
+body{font-family:'Segoe UI',Arial;background:#F5F0E6;color:#222;margin:0}
+.top{position:sticky;top:0;background:#fff;padding:15px;z-index:999;display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 15px rgba(0,0,0,0.1)}
+.logo{font-size:24px;font-weight:900;color:#B8860B}
+.search-wrap{display:flex;align-items:center;background:#fff;border:2px solid #FF9800;border-radius:50px;padding:5px 5px 5px 18px;width:85%;max-width:420px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+.search-wrap input{flex:1;background:transparent;border:none;outline:none;color:#222;padding:12px}
+.search-btn{background:#FF9800;color:white;border:none;padding:12px 20px;border-radius:50px;font-weight:900}
+.search-res{width:85%;max-width:420px;background:#fff;border:1px solid #FF9800;padding:12px;border-radius:15px;margin-top:12px;color:#222}
+.dashboard{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px}
+.dash{background:linear-gradient(135deg,#FF9800,#FF5722);color:white;padding:15px;border-radius:20px}
+.dash2{background:white;border:1px solid #FF9800;padding:15px;border-radius:20px;color:#222}
+.card{background:white;padding:15px;border-radius:20px;margin:12px 15px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}
+input{width:100%;padding:12px;margin:5px 0;border-radius:12px;border:none;background:#F0EDE6;color:#222}
+button{background:#FF9800;color:white;padding:13px;width:100%;border:none;border-radius:12px;font-weight:900}
+a{color:#FF5722;text-decoration:none;font-weight:bold}
+.dp{width:50px;height:50px;background:linear-gradient(135deg,#FF9800,#FF5722);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900}
+.top-def{background:#FFF3E0;border:1px solid #FF9800;padding:10px;border-radius:12px;margin:5px 0;color:#222}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="logo">🛒 SHARMA KIRANA PREMIUM 🛒</div>
+<p style="margin:5px;color:#888">Jamwa Ramgarh - Since 2020</p>
+<form method="GET" action="/" class="search-wrap">
+<span>🔍</span><input name="q" value="{{q}}" placeholder="Search Customer...">
+{% if q %}<a href="/" style="color:#222;padding:8px">✕</a>{% endif %}
+<button class="search-btn">Search</button>
+</form>
+{% if q %}<div class="search-res"><b>🔍 {{search_result|length}} mila</b>{% for c in search_result %}<div style="background:#F5F0E6;padding:10px;border-radius:10px;margin:5px 0"><b>{{c.name}}</b> - ₹{{c.total}}<br><a href="/customer/{{c.id}}">📖 KHATA DEKHO</a></div>{% endfor %}</div>{% endif %}
+</div>
+
+<div class="dashboard">
+<div class="dash"><small>TOTAL UDHAAR BAHAR</small><h2 style="margin:5px 0">₹{{total_udhaar}}</h2><small>{{total_customers}} Customers</small></div>
+<div class="dash2"><small>📅 AAJ KA</small><br><span style="color:red">Udhaar ₹{{today_udhaar}}</span><br><span style="color:green">Jama ₹{{today_jama}}</span></div>
+</div>
+
+{% if top %}
+<div style="padding:0 15px"><h3>🔥 TOP 3 DEFAULTER</h3>
+{% for c in top %}<div class="top-def"><b>{{loop.index}}. {{c.name}}</b> - <span style="color:red;font-weight:bold">₹{{c.total}}</span> - {{c.phone}} | <a href="/customer/{{c.id}}">VASOOLO →</a></div>{% endfor %}
+</div>
+{% endif %}
+
+<div class="card">
+<h3>➕ NAYA CUSTOMER</h3>
+<form action="/add" method="POST">
+<input name="name" placeholder="Customer Ka Naam" required>
+<input name="phone" placeholder="Phone - 10 digit" required>
+<button>➕ CUSTOMER ADD KARO</button>
+</form>
+</div>
+
+{% for c in customers %}
+<div class="card" style="display:flex;gap:12px;align-items:center">
+<div class="dp">{{c.name[0]}}</div>
+<div style="flex:1"><b>{{c.name}}</b> - {{c.phone}}<br><span style="color:red;font-weight:bold">Udhaar ₹{{c.total}}</span></div>
+<div><a href="/customer/{{c.id}}">📖 KHATA</a><br><a href="/delete/{{c.id}}" style="color:red;font-size:12px">DELETE</a></div>
+</div>
+{% endfor %}
+</body>
+</html>
